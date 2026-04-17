@@ -1,0 +1,60 @@
+name: Nightly Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the nightly release (e.g. v0.5.1-nightly)'
+        required: true
+        default: 'nightly'
+
+jobs:
+  release:
+    name: Nightly Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Ensure we can push back
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update manifest.json
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          jq ".version = \"$VERSION\"" custom_components/hoymiles_wifi/manifest.json > manifest.json.tmp && mv manifest.json.tmp custom_components/hoymiles_wifi/manifest.json
+
+      - name: Commit and Push manifest.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add custom_components/hoymiles_wifi/manifest.json
+          git commit -m "chore: update manifest version to ${{ github.event.inputs.version }} [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Delete existing nightly release and tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ github.event.inputs.version }}"
+          # Delete the release if it exists
+          gh release delete "$TAG" --yes || true
+          # Delete the tag if it exists (remote)
+          git push --delete origin "$TAG" || true
+          # Delete the tag if it exists (local)
+          git tag -d "$TAG" || true
+
+      - name: Create Archive
+        run: |
+          zip -r hoymiles_wifi.zip custom_components/hoymiles_wifi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: Nightly Release ${{ github.event.inputs.version }}
+          prerelease: true
+          files: hoymiles_wifi.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
