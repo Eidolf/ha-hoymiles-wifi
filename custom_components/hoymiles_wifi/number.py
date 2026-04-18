@@ -176,9 +176,9 @@ class HoymilesNumberEntity(HoymilesCoordinatorEntity, NumberEntity):
         if self._native_value is None and self._data_coordinator is not None and self._data_coordinator.data is not None:
             if self._attribute_name == "limit_power_mypower":
                 data = self._data_coordinator.data
-                if hasattr(data, "sgs_data") and data.sgs_data:
+                if hasattr(data, "sgs_data") and data.sgs_data and len(data.sgs_data) > 0:
                     self._native_value = getattr(data.sgs_data[0], "power_limit", None)
-                elif hasattr(data, "tgs_data") and data.tgs_data:
+                elif hasattr(data, "tgs_data") and data.tgs_data and len(data.tgs_data) > 0:
                     self._native_value = getattr(data.tgs_data[0], "power_limit", None)
 
         self._assumed_state = False
