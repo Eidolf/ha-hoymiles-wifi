@@ -306,47 +306,6 @@ class HoymilesAlarmListUpdateCoordinator(HoymilesDataUpdateCoordinator):
         return response
 
 
-class HoymilesNetworkInfoUpdateCoordinator(HoymilesDataUpdateCoordinator):
-    """Network Info coordinator for Hoymiles integration."""
-
-    async def _async_update_data(self):
-        """Update data via library."""
-        _LOGGER.debug("Hoymiles network info coordinator update")
-
-        try:
-            response = await self._dtu.async_network_info()
-        except Exception as err:
-            _LOGGER.debug("NetworkInfo: Exception while querying data: %s", err)
-            return None
-
-        if not response:
-            _LOGGER.debug("Unable to retrieve network info. Inverter might be offline.")
-            return None
-
-        self._handle_update_success("NetworkInfo")
-        return response
-
-
-class HoymilesAlarmListUpdateCoordinator(HoymilesDataUpdateCoordinator):
-    """Alarm List coordinator for Hoymiles integration."""
-
-    async def _async_update_data(self):
-        """Update data via library."""
-        _LOGGER.debug("Hoymiles alarm list coordinator update")
-
-        try:
-            response = await self._dtu.async_get_alarm_list()
-        except Exception as err:
-            _LOGGER.debug("AlarmList: Exception while querying data: %s", err)
-            return None
-
-        if not response:
-            _LOGGER.debug("Unable to retrieve alarm list data. Inverter might be offline.")
-            return None
-
-        self._handle_update_success("AlarmList")
-        return response
-
 
 class HoymilesEnergyStorageUpdateCoordinator(HoymilesDataUpdateCoordinator):
     """Energy Storage Update coordinator for Hoymiles integration."""
