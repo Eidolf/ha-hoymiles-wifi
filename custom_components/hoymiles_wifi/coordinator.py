@@ -159,12 +159,12 @@ class HoymilesConfigUpdateCoordinator(HoymilesDataUpdateCoordinator):
         try:
             response = await self._dtu.async_get_config()
         except Exception as err:
-            _LOGGER.debug("Config: Exception while querying data: %s", err)
-            return None
+            self._handle_update_failure("Config")
+            return
 
         if not response:
-            _LOGGER.debug("Unable to retrieve config data. Inverter might be offline.")
-            return None
+            self._handle_update_failure("Config")
+            return
 
         self._handle_update_success("Config")
         return response
@@ -184,12 +184,12 @@ class HoymilesAppInfoUpdateCoordinator(HoymilesDataUpdateCoordinator):
         try:
             response = await self._dtu.async_app_information_data()
         except Exception as err:
-            _LOGGER.debug("AppInfo: Exception while querying data: %s", err)
-            return None
+            self._handle_update_failure("AppInfo")
+            return
 
         if not response:
-            _LOGGER.debug("Unable to retrieve app info data. Inverter might be offline.")
-            return None
+            self._handle_update_failure("AppInfo")
+            return
 
         # Encryption handling only runs on successful responses
         if response.dtu_info.dfs:
