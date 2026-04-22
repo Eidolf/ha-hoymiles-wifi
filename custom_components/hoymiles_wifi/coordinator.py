@@ -93,6 +93,15 @@ class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
                 self._consecutive_failures,
             )
 
+        if self._consecutive_failures == 100:
+            _LOGGER.warning(
+                "%s: DTU has been offline for an extended period. Automatically reloading the integration to ensure a clean reconnect state when it wakes up.",
+                coordinator_name,
+            )
+            self._hass.async_create_task(
+                self._hass.config_entries.async_reload(self._config_entry.entry_id)
+            )
+
         raise UpdateFailed(
             f"{coordinator_name}: Unable to retrieve data from DTU. "
             f"Inverter/DTU might be offline (failure #{self._consecutive_failures})."
