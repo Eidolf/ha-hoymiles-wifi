@@ -1,5 +1,6 @@
 """Support for Hoymiles number sensors."""
 
+import asyncio
 import dataclasses
 from dataclasses import dataclass
 from enum import Enum
@@ -162,6 +163,12 @@ class HoymilesNumberEntity(HoymilesCoordinatorEntity, NumberEntity):
                 )
             )
 
+        async def _delayed_config_refresh():
+            await asyncio.sleep(15)  # Wait for integration and DTU to settle
+            await self.coordinator.async_request_refresh()
+
+        self.hass.async_create_task(_delayed_config_refresh())
+
     def update_state_value(self):
         """Update the state value of the entity."""
 
@@ -172,8 +179,8 @@ class HoymilesNumberEntity(HoymilesCoordinatorEntity, NumberEntity):
             None,
         )
 
-        # Fallback to data coordinator if config value is not available
-        if self._native_value is None and self._data_coordinator is not None and self._data_coordinator.data is not None:
+        # Fallback to data coordinator if config value is not available or defaults to 0
+        if (self._native_value is None or self._native_value == 0) and self._data_coordinator is not None and self._data_coordinator.data is not None:
             if self._attribute_name == "limit_power_mypower":
                 data = self._data_coordinator.data
                 if hasattr(data, "sgs_data") and data.sgs_data and len(data.sgs_data) > 0:
