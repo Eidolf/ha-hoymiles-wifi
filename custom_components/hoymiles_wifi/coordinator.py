@@ -9,6 +9,7 @@ from homeassistant.const import CONF_HOST, Platform
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from hoymiles_wifi.dtu import DTU
 from .const import DOMAIN, FAILURE_LOG_INTERVAL
+from .util import async_check_and_update_enc_rand, is_encrypted_dtu
 
 _LOGGER = logging.getLogger(__name__)
 
