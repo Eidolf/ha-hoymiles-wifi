@@ -114,6 +114,12 @@
       "signal_strength": {
         "name": "Force du signal"
       },
+      "inverter_model": {
+        "name": "Modèle"
+      },
+      "dtu_model": {
+        "name": "Modèle"
+      },
       "voltage_phase_A": {
         "name": "Tension phase A"
       },
@@ -269,12 +275,6 @@
       },
       "voltage_module_low": {
         "name": "Tension minimale du module"
-      },
-      "grid_status": {
-        "name": "État du réseau"
-      },
-      "grid_power_factor_deviation": {
-        "name": "Écart du facteur de puissance"
       },
       "grid_voltage_phase": {
         "name": "Tension réseau phase {phase}"

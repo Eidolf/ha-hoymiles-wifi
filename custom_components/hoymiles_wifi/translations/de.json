@@ -114,6 +114,12 @@
       "signal_strength": {
         "name": "Signalstärke"
       },
+      "inverter_model": {
+        "name": "Modell"
+      },
+      "dtu_model": {
+        "name": "Modell"
+      },
       "voltage_phase_A": {
         "name": "Spannung Phase A"
       },
@@ -269,12 +275,6 @@
       },
       "voltage_module_low": {
         "name": "Minimale Modulspannung"
-      },
-      "grid_status": {
-        "name": "Netzstatus"
-      },
-      "grid_power_factor_deviation": {
-        "name": "Leistungsfaktorabweichung"
       },
       "grid_voltage_phase": {
         "name": "Netzspannung Phase {phase}"
