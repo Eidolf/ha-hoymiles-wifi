@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Hoymiles Verbindung",
-        "description": "Wenn Sie Hilfe bei der Konfiguration ben\u00f6tigen, schauen Sie hier vorbei: https://github.com/suaveolent/ha-hoymiles-wifi",
+        "description": "Wenn Sie Hilfe bei der Konfiguration benötigen, schauen Sie hier vorbei: https://github.com/suaveolent/ha-hoymiles-wifi",
         "data": {
           "host": "Host",
           "update_interval": "Aktualisierungsintervall (Sekunden)",
@@ -12,7 +12,7 @@
       },
       "reconfigure": {
         "title": "Hoymiles Verbindung",
-        "description": "Wenn Sie Hilfe bei der Konfiguration ben\u00f6tigen, schauen Sie hier vorbei: https://github.com/suaveolent/ha-hoymiles-wifi",
+        "description": "Wenn Sie Hilfe bei der Konfiguration benötigen, schauen Sie hier vorbei: https://github.com/suaveolent/ha-hoymiles-wifi",
         "data": {
           "host": "Host",
           "update_interval": "Aktualisierungsintervall (Sekunden)",
@@ -21,7 +21,7 @@
       }
     },
     "error": {
-      "cannot_connect": "Verbindung nicht m\u00f6glich."
+      "cannot_connect": "Verbindung nicht möglich."
     },
     "abort": {
       "already_configured": "Bereits konfiguriert."
@@ -88,7 +88,7 @@
         "name": "WLAN-SSID"
       },
       "meter_kind": {
-        "name": "Z\u00e4hlermodell"
+        "name": "Zählermodell"
       },
       "mac_address": {
         "name": "MAC-Adresse"
@@ -112,7 +112,7 @@
         "name": "HW-Version"
       },
       "signal_strength": {
-        "name": "Signalst\u00e4rke"
+        "name": "Signalstärke"
       },
       "voltage_phase_A": {
         "name": "Spannung Phase A"
@@ -420,7 +420,7 @@
       "name": "DTU"
     },
     "meter": {
-      "name": "Z\u00e4hler"
+      "name": "Zähler"
     },
     "hybrid_inverter": {
       "name": "Hybrid-Wechselrichter"
@@ -433,7 +433,7 @@
       "fields": {
         "bms_mode": {
           "name": "BMS-Modus",
-          "description": "Der einzustellende BMS-Arbeitsmodus. M\u00f6gliche Werte sind: 'self_use', 'economic', 'backup_power', 'pure_off_grid', 'forced_charging', 'forced_discharge', 'peak_shaving', 'time_of_use'"
+          "description": "Der einzustellende BMS-Arbeitsmodus. Mögliche Werte sind: 'self_use', 'economic', 'backup_power', 'pure_off_grid', 'forced_charging', 'forced_discharge', 'peak_shaving', 'time_of_use'"
         },
         "rev_soc": {
           "name": "Reservierter SOC",
@@ -448,16 +448,16 @@
           "description": "Der einzustellende Spitzen-Ladezustand (SOC) in %."
         },
         "peak_meter_power": {
-          "name": "Spitzenz\u00e4hlerleistung",
-          "description": "Die einzustellende Spitzenz\u00e4hlerleistung in W."
+          "name": "Spitzenzählerleistung",
+          "description": "Die einzustellende Spitzenzählerleistung in W."
         },
         "time_settings": {
           "name": "Zeiteinstellungen",
-          "description": "Zeiteinstellungen f\u00fcr den Nutzungszeitmodus konfigurieren."
+          "description": "Zeiteinstellungen für den Nutzungszeitmodus konfigurieren."
         },
         "time_periods": {
           "name": "Zeitabschnitte",
-          "description": "Zeitabschnitte f\u00fcr den Nutzungszeitmodus festlegen."
+          "description": "Zeitabschnitte für den Nutzungszeitmodus festlegen."
         }
       }
     }
