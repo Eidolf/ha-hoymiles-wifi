@@ -8,19 +8,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, Platform
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from hoymiles_wifi.dtu import DTU
-from .util import is_encrypted_dtu, async_check_and_update_enc_rand
-from hoymiles_wifi.protobuf import NetworkInfo_pb2, CommandPB_pb2
-
-
-from .const import DOMAIN
+from .const import DOMAIN, FAILURE_LOG_INTERVAL
 
 _LOGGER = logging.getLogger(__name__)
-
-PLATFORMS = [Platform.SENSOR, Platform.NUMBER, Platform.BINARY_SENSOR, Platform.BUTTON]
-
-# --- RECONNECTION: Log a reminder every N consecutive failures to avoid log spam
-# during extended outages (e.g., overnight). First failure always logs a warning.
-_FAILURE_LOG_INTERVAL = 10
 
 
 class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
@@ -79,7 +69,7 @@ class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
                 "unavailable. Will automatically recover when DTU comes back online.",
                 coordinator_name,
             )
-        elif self._consecutive_failures % _FAILURE_LOG_INTERVAL == 0:
+        elif self._consecutive_failures % FAILURE_LOG_INTERVAL == 0:
             _LOGGER.warning(
                 "%s: DTU still offline after %d consecutive failed updates. "
                 "Will keep retrying automatically.",
