@@ -154,14 +154,14 @@ HOYMILES_SENSORS = [
             DTUType.DTU_W_LITE,
         ],
     ),
-        HoymilesSensorEntityDescription(
+    HoymilesSensorEntityDescription(
         key="sgs_data[<inverter_count>].power_limit",
         translation_key="power_limit",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         conversion_factor=0.1,
     ),
-HoymilesSensorEntityDescription(
+    HoymilesSensorEntityDescription(
         key="sgs_data[<inverter_count>].active_power",
         translation_key="ac_active_power",
         native_unit_of_measurement=UnitOfPower.WATT,
@@ -802,7 +802,7 @@ HOYMILES_ENERGY_STORAGE_SENSORS = [
         native_unit_of_measurement=UnitOfElectricPotential.VOLT,
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
-        conversion_factor=0.001,
+        conversion_factor=0.01,
     ),
     HoymilesEnergyStorageSensorEntityDescription(
         key="[<inverter_count>].battery_management.temp_high_charge",
@@ -906,7 +906,7 @@ HOYMILES_ENERGY_STORAGE_SENSORS = [
         native_unit_of_measurement=UnitOfElectricCurrent.AMPERE,
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
-        conversion_factor=0.001,
+        conversion_factor=0.01,
     ),
     HoymilesEnergyStorageSensorEntityDescription(
         key="[<inverter_count>].grid.phases[<phase_count>].active_power",
@@ -1050,7 +1050,6 @@ HOYMILES_ENERGY_STORAGE_SENSORS = [
         native_unit_of_measurement=UnitOfElectricCurrent.MILLIAMPERE,
         device_class=SensorDeviceClass.CURRENT,
         state_class=SensorStateClass.MEASUREMENT,
-        conversion_factor=0.1,
     ),
     HoymilesEnergyStorageSensorEntityDescription(
         key="[<inverter_count>].inverter.phases[<phase_count>].dc_voltage",
@@ -1548,13 +1547,12 @@ class HoymilesDataSensorEntity(HoymilesCoordinatorEntity, RestoreSensor):
                 attribute = getattr(attribute, part, None)
             new_native_value = attribute
 
+        elif self._attribute_name == "dtu_model":
+            new_native_value = get_dtu_model_name(self.entity_description.serial_number)
         else:
-            if self._attribute_name == "dtu_model":
-                new_native_value = get_dtu_model_name(self.entity_description.serial_number)
-            else:
-                new_native_value = getattr(
-                    self.coordinator.data, self._attribute_name, None
-                )
+            new_native_value = getattr(
+                self.coordinator.data, self._attribute_name, None
+            )
 
         if new_native_value is not None and self._conversion_factor is not None:
             new_native_value *= self._conversion_factor
