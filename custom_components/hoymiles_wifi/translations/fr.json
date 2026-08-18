@@ -5,26 +5,26 @@
         "title": "Connexion DTU Hoymiles",
         "description": "Si vous avez besoin d'aide pour la configuration, consultez ici : https://github.com/suaveolent/ha-hoymiles-wifi",
         "data": {
-          "host": "H\u00f4te",
-          "update_interval": "Intervalle de mise \u00e0 jour (secondes)",
-          "timeout": "D\u00e9lai d'attente (secondes)"
+          "host": "Hôte",
+          "update_interval": "Intervalle de mise à jour (secondes)",
+          "timeout": "Délai d'attente (secondes)"
         }
       },
       "reconfigure": {
         "title": "Connexion DTU Hoymiles",
         "description": "Si vous avez besoin d'aide pour la configuration, consultez ici : https://github.com/suaveolent/ha-hoymiles-wifi",
         "data": {
-          "host": "H\u00f4te",
-          "update_interval": "Intervalle de mise \u00e0 jour (secondes)",
-          "timeout": "D\u00e9lai d'attente (secondes)"
+          "host": "Hôte",
+          "update_interval": "Intervalle de mise à jour (secondes)",
+          "timeout": "Délai d'attente (secondes)"
         }
       }
     },
     "error": {
-      "cannot_connect": "\u00c9chec de la connexion."
+      "cannot_connect": "Échec de la connexion."
     },
     "abort": {
-      "already_configured": "D\u00e9j\u00e0 configur\u00e9."
+      "already_configured": "Déjà configuré."
     }
   },
   "entity": {
@@ -43,28 +43,28 @@
         "name": "Puissance AC"
       },
       "ac_daily_energy": {
-        "name": "\u00c9nergie quotidienne AC"
+        "name": "Énergie quotidienne AC"
       },
       "ac_reactive_power": {
-        "name": "Puissance r\u00e9active AC"
+        "name": "Puissance réactive AC"
       },
       "grid_voltage": {
-        "name": "Tension du r\u00e9seau"
+        "name": "Tension du réseau"
       },
       "ac_current": {
         "name": "Courant AC"
       },
       "grid_frequency": {
-        "name": "Fr\u00e9quence du r\u00e9seau"
+        "name": "Fréquence du réseau"
       },
       "inverter_power_factor": {
         "name": "Facteur de puissance de l'onduleur"
       },
       "inverter_temperature": {
-        "name": "Temp\u00e9rature de l'onduleur"
+        "name": "Température de l'onduleur"
       },
       "inverter_warning_number": {
-        "name": "Num\u00e9ro d'avertissement"
+        "name": "Numéro d'avertissement"
       },
       "port_dc_voltage": {
         "name": "Tension DC du port {port_number}"
@@ -76,10 +76,10 @@
         "name": "Puissance DC du port {port_number}"
       },
       "port_dc_total_energy": {
-        "name": "\u00c9nergie totale DC du port {port_number}"
+        "name": "Énergie totale DC du port {port_number}"
       },
       "port_dc_daily_energy": {
-        "name": "\u00c9nergie quotidienne DC du port {port_number}"
+        "name": "Énergie quotidienne DC du port {port_number}"
       },
       "port_error_code": {
         "name": "Code d'erreur du port {port_number}"
@@ -113,6 +113,12 @@
       },
       "signal_strength": {
         "name": "Force du signal"
+      },
+      "inverter_model": {
+        "name": "Modèle"
+      },
+      "dtu_model": {
+        "name": "Modèle"
       },
       "voltage_phase_A": {
         "name": "Tension phase A"
@@ -148,28 +154,28 @@
         "name": "Facteur de puissance total"
       },
       "energy_total_power": {
-        "name": "\u00c9nergie totale de puissance"
+        "name": "Énergie totale de puissance"
       },
       "energy_phase_A": {
-        "name": "\u00c9nergie phase A"
+        "name": "Énergie phase A"
       },
       "energy_phase_B": {
-        "name": "\u00c9nergie phase B"
+        "name": "Énergie phase B"
       },
       "energy_phase_C": {
-        "name": "\u00c9nergie phase C"
+        "name": "Énergie phase C"
       },
       "energy_total_consumed": {
-        "name": "\u00c9nergie totale consomm\u00e9e"
+        "name": "Énergie totale consommée"
       },
       "energy_phase_A_consumed": {
-        "name": "\u00c9nergie phase A consomm\u00e9e"
+        "name": "Énergie phase A consommée"
       },
       "energy_phase_B_consumed": {
-        "name": "\u00c9nergie phase B consomm\u00e9e"
+        "name": "Énergie phase B consommée"
       },
       "energy_phase_C_consumed": {
-        "name": "\u00c9nergie phase C consomm\u00e9e"
+        "name": "Énergie phase C consommée"
       },
       "current_phase_A": {
         "name": "Courant phase A"
@@ -190,22 +196,22 @@
         "name": "Facteur de puissance phase C"
       },
       "energy_to_load": {
-        "name": "\u00c9nergie \u00e0 charger"
+        "name": "Énergie vers la charge"
       },
       "energy_to_battery": {
-        "name": "\u00c9nergie \u00e0 la batterie"
+        "name": "Énergie vers la batterie"
       },
       "energy_to_grid": {
-        "name": "\u00c9nergie vers le r\u00e9seau"
+        "name": "Énergie vers le réseau"
       },
       "energy_from_pv": {
-        "name": "\u00c9nergie provenant de PV"
+        "name": "Énergie provenant de PV"
       },
       "energy_from_battery": {
-        "name": "\u00c9nergie provenant de la batterie"
+        "name": "Énergie provenant de la batterie"
       },
       "energy_from_grid": {
-        "name": "\u00c9nergie provenant du r\u00e9seau"
+        "name": "Énergie provenant du réseau"
       },
       "pv_panel_voltage": {
         "name": "Tension du panneau PV {port_number}"
@@ -217,13 +223,13 @@
         "name": "Puissance du panneau PV {port_number}"
       },
       "pv_panel_energy": {
-        "name": "\u00c9nergie du panneau PV {port_number}"
+        "name": "Énergie du panneau PV {port_number}"
       },
       "state_of_charge": {
-        "name": "\u00c9tat de charge"
+        "name": "État de charge"
       },
       "state_of_health": {
-        "name": "\u00c9tat de sant\u00e9"
+        "name": "État de santé"
       },
       "battery_voltage": {
         "name": "Tension de la batterie"
@@ -232,7 +238,7 @@
         "name": "Mode de charge interne"
       },
       "internal_discharge_mode": {
-        "name": "Mode de d\u00e9charge interne"
+        "name": "Mode de décharge interne"
       },
       "cell_voltage_high": {
         "name": "Tension maximale des cellules"
@@ -241,22 +247,22 @@
         "name": "Tension minimale des cellules"
       },
       "temp_high_charge": {
-        "name": "Temp\u00e9rature maximale de charge"
+        "name": "Température maximale de charge"
       },
       "temp_low_charge": {
-        "name": "Temp\u00e9rature minimale de charge"
+        "name": "Température minimale de charge"
       },
       "temp_high_module": {
-        "name": "Temp\u00e9rature maximale du module"
+        "name": "Température maximale du module"
       },
       "temp_low_module": {
-        "name": "Temp\u00e9rature minimale du module"
+        "name": "Température minimale du module"
       },
       "energy_charged": {
-        "name": "\u00c9nergie charg\u00e9e"
+        "name": "Énergie chargée"
       },
       "energy_discharged": {
-        "name": "\u00c9nergie d\u00e9charg\u00e9e"
+        "name": "Énergie déchargée"
       },
       "voltage_charge_high": {
         "name": "Tension de charge maximale"
@@ -270,38 +276,32 @@
       "voltage_module_low": {
         "name": "Tension minimale du module"
       },
-      "grid_status": {
-        "name": "\u00c9tat du r\u00e9seau"
-      },
-      "grid_power_factor_deviation": {
-        "name": "\u00c9cart du facteur de puissance"
-      },
       "grid_voltage_phase": {
-        "name": "Tension r\u00e9seau phase {phase}"
+        "name": "Tension réseau phase {phase}"
       },
       "grid_current_phase": {
-        "name": "Courant r\u00e9seau phase {phase}"
+        "name": "Courant réseau phase {phase}"
       },
       "grid_reactive_power_phase": {
-        "name": "Puissance r\u00e9active phase {phase}"
+        "name": "Puissance réactive phase {phase}"
       },
       "grid_active_power_phase": {
-        "name": "Puissance active du r\u00e9seau phase {phase}"
+        "name": "Puissance active du réseau phase {phase}"
       },
       "grid_power_factor_phase": {
         "name": "Facteur de puissance phase {phase}"
       },
       "grid_energy_frequency_phase": {
-        "name": "Fr\u00e9quence \u00e9nergie phase {phase}"
+        "name": "Fréquence énergie phase {phase}"
       },
       "grid_energy_consumed_phase": {
-        "name": "\u00c9nergie consomm\u00e9e phase {phase}"
+        "name": "Énergie consommée phase {phase}"
       },
       "load_status": {
-        "name": "\u00c9tat de la charge"
+        "name": "État de la charge"
       },
       "load_frequency": {
-        "name": "Fr\u00e9quence de la charge"
+        "name": "Fréquence de la charge"
       },
       "load_voltage_phase": {
         "name": "Tension charge phase {phase}"
@@ -310,16 +310,16 @@
         "name": "Puissance active phase {phase}"
       },
       "load_energy_consumed_phase": {
-        "name": "\u00c9nergie consomm\u00e9e phase {phase}"
+        "name": "Énergie consommée phase {phase}"
       },
       "inverter_status": {
-        "name": "\u00c9tat de l'onduleur"
+        "name": "État de l'onduleur"
       },
       "inverter_frequency": {
-        "name": "Fr\u00e9quence de l'onduleur"
+        "name": "Fréquence de l'onduleur"
       },
       "inverter_isolation_resistance": {
-        "name": "R\u00e9sistance d'isolement de l'onduleur"
+        "name": "Résistance d'isolement de l'onduleur"
       },
       "inverter_leakage_current": {
         "name": "Courant de fuite de l'onduleur"
@@ -337,7 +337,7 @@
         "name": "Puissance active onduleur phase {phase}"
       },
       "inverter_reactive_power_phase": {
-        "name": "Puissance r\u00e9active onduleur phase {phase}"
+        "name": "Puissance réactive onduleur phase {phase}"
       },
       "inverter_dc_current_phase": {
         "name": "Courant DC onduleur phase {phase}"
@@ -355,10 +355,10 @@
         "name": "Puissance EPS onduleur phase {phase}"
       },
       "pv_inverter_status": {
-        "name": "\u00c9tat de l'onduleur PV"
+        "name": "État de l'onduleur PV"
       },
       "pv_inverter_frequency": {
-        "name": "Fr\u00e9quence de l'onduleur PV"
+        "name": "Fréquence de l'onduleur PV"
       },
       "pv_inverter_voltage_phase": {
         "name": "Tension de phase de l'onduleur PV {phase}"
@@ -370,10 +370,10 @@
         "name": "Puissance active de phase de l'onduleur PV {phase}"
       },
       "pv_inverter_reactive_power_phase": {
-        "name": "Puissance r\u00e9active de phase de l'onduleur PV {phase}"
+        "name": "Puissance réactive de phase de l'onduleur PV {phase}"
       },
       "pv_inverter_energy_phase": {
-        "name": "\u00c9nergie de phase de l'onduleur PV {phase}"
+        "name": "Énergie de phase de l'onduleur PV {phase}"
       },
       "pv_to_load": {
         "name": "Puissance PV vers charge"
@@ -382,16 +382,16 @@
         "name": "Puissance batterie vers charge"
       },
       "grid_to_load": {
-        "name": "Puissance r\u00e9seau vers charge"
+        "name": "Puissance réseau vers charge"
       },
       "pv_to_battery": {
         "name": "Puissance PV vers batterie"
       },
       "pv_to_grid": {
-        "name": "Puissance PV vers r\u00e9seau"
+        "name": "Puissance PV vers réseau"
       },
       "battery_to_grid": {
-        "name": "Puissance batterie vers r\u00e9seau"
+        "name": "Puissance batterie vers réseau"
       },
       "power_limit": {
         "name": "Limite de puissance"
@@ -399,16 +399,16 @@
     },
     "button": {
       "restart": {
-        "name": "Red\u00e9marrer"
+        "name": "Redémarrer"
       },
       "turn_off": {
-        "name": "\u00c9teindre"
+        "name": "Éteindre"
       },
       "turn_on": {
         "name": "Allumer"
       },
       "enable_performance_data_mode": {
-        "name": "Exp\u00e9rimental: Activer le mode de donn\u00e9es de performance"
+        "name": "Expérimental: Activer le mode de données de performance"
       }
     }
   },
@@ -428,36 +428,36 @@
   },
   "services": {
     "set_bms_mode": {
-      "name": "D\u00e9finir le mode BMS",
-      "description": "D\u00e9finir le mode BMS de la batterie connect\u00e9e.",
+      "name": "Définir le mode BMS",
+      "description": "Définir le mode BMS de la batterie connectée.",
       "fields": {
         "bms_mode": {
           "name": "Mode BMS",
-          "description": "Le mode de fonctionnement BMS \u00e0 d\u00e9finir. Valeurs possibles : 'self_use', 'economic', 'backup_power', 'pure_off_grid', 'forced_charging', 'forced_discharge', 'peak_shaving', 'time_of_use'"
+          "description": "Le mode de fonctionnement BMS à définir. Valeurs possibles : 'self_use', 'economic', 'backup_power', 'pure_off_grid', 'forced_charging', 'forced_discharge', 'peak_shaving', 'time_of_use'"
         },
         "rev_soc": {
-          "name": "SOC r\u00e9serv\u00e9",
-          "description": "L\u2019\u00e9tat de charge (SOC) r\u00e9serv\u00e9 \u00e0 d\u00e9finir (en %)."
+          "name": "SOC réservé",
+          "description": "L’état de charge (SOC) réservé à définir (en %)."
         },
         "max_power": {
           "name": "Puissance maximale",
-          "description": "La puissance maximale de charge/d\u00e9charge \u00e0 d\u00e9finir (en %)."
+          "description": "La puissance maximale de charge/décharge à définir (en %)."
         },
         "peak_soc": {
           "name": "SOC de pointe",
-          "description": "L\u2019\u00e9tat de charge (SOC) de pointe \u00e0 d\u00e9finir (en %)."
+          "description": "L’état de charge (SOC) de pointe à définir (en %)."
         },
         "peak_meter_power": {
           "name": "Puissance de pointe du compteur",
-          "description": "La puissance de pointe du compteur \u00e0 d\u00e9finir (en W)."
+          "description": "La puissance de pointe du compteur à définir (en W)."
         },
         "time_settings": {
-          "name": "Param\u00e8tres temporels",
-          "description": "Configurer les param\u00e8tres li\u00e9s au mode heures d\u2019utilisation."
+          "name": "Paramètres temporels",
+          "description": "Configurer les paramètres liés au mode heures d’utilisation."
         },
         "time_periods": {
-          "name": "P\u00e9riodes horaires",
-          "description": "D\u00e9finir les p\u00e9riodes pour le mode heures d\u2019utilisation."
+          "name": "Périodes horaires",
+          "description": "Définir les périodes pour le mode heures d’utilisation."
         }
       }
     }
@@ -466,13 +466,13 @@
     "bms_mode_type": {
       "options": {
         "self_use": "Mode autoconsommation",
-        "economic": "Mode \u00e9conomique",
+        "economic": "Mode économique",
         "backup_power": "Mode secours",
-        "pure_off_grid": "Mode hors r\u00e9seau",
-        "forced_charging": "Mode charge forc\u00e9e",
-        "forced_discharge": "Mode d\u00e9charge forc\u00e9e",
-        "peak_shaving": "Mode \u00e9cr\u00eatage de pointe",
-        "time_of_use": "Mode heures d\u2019utilisation"
+        "pure_off_grid": "Mode hors réseau",
+        "forced_charging": "Mode charge forcée",
+        "forced_discharge": "Mode décharge forcée",
+        "peak_shaving": "Mode écrêtage de pointe",
+        "time_of_use": "Mode heures d’utilisation"
       }
     }
   }
