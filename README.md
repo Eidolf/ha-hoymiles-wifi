@@ -13,6 +13,8 @@ It uses the [hoymiles-wifi](https://github.com/suaveolent/hoymiles-wifi) Python 
 > [!NOTE]
 > Disclaimer: This library is not affiliated with Hoymiles. It is an independent project developed to provide tools for interacting with Hoymiles DTUs and Hoymiles HMS-XXXXW series micro-inverters featuring integrated WiFi DTU. Any trademarks or product names mentioned are the property of their respective owners.
 
+Buy Me A Coffee link from the original Repository Owner >
+
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/suaveolent)
 
 ## Supported Devices
@@ -47,7 +49,7 @@ The custom component was successfully tested with:
 
 4. Add a new custom repository:
 
-- **URL:** `https://github.com/suaveolent/ha-hoymiles-wifi`
+- **URL:** `https://github.com/Eidolf/ha-hoymiles-wifi`
 
 - **Category:** Integration
 
