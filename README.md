@@ -1,5 +1,12 @@
 # Hoymiles for Home Assistant
 
+> [!WARNING]
+> **Fork Notice & Maintenance Scope**
+>
+> This repository is a personal fork of [suaveolent/ha-hoymiles-wifi](https://github.com/suaveolent/ha-hoymiles-wifi) maintained on a smaller scale tailored for my personal environment.
+>
+> Issues and pull requests are welcome; however, please understand that response times and fixes may be irregular and occasional. I personally only own and can test against a setup with a **DTU-WLite-S** and an **HMS-1600** microinverter.
+
 This custom component integrates Hoymiles DTUs, HMS-XXXXW microinverters and hybrid inverters into Home Assistant, providing live inverter data.
 It uses the [hoymiles-wifi](https://github.com/suaveolent/hoymiles-wifi) Python library to communicate directly with the devices over your local network — no cloud connection required.
 
