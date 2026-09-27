@@ -30,6 +30,7 @@ from .const import (
     DEFAULT_CONFIG_UPDATE_INTERVAL_SECONDS,
     DEFAULT_TIMEOUT_SECONDS,
     DOMAIN,
+    ENC_RAND_LENGTH,
     HASS_APP_INFO_COORDINATOR,
     HASS_CONFIG_COORDINATOR,
     HASS_DATA_COORDINATOR,
@@ -51,6 +52,44 @@ from .services import async_handle_set_bms_mode
 from .util import async_get_config_entry_data_for_host
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def _decode_stored_enc_rand(
+    host: str, is_encrypted: bool, enc_rand: str | None
+) -> bytes | None:
+    """Decode a stored encryption random, or return None if it is unusable."""
+    if not is_encrypted:
+        return None
+
+    if not isinstance(enc_rand, str) or not enc_rand:
+        _LOGGER.warning(
+            "DTU %s is marked encrypted but has no usable encryption random; "
+            "starting with unencrypted requests",
+            host,
+        )
+        return None
+
+    try:
+        decoded = bytes.fromhex(enc_rand)
+    except ValueError:
+        _LOGGER.warning(
+            "DTU %s has a malformed stored encryption random; starting with "
+            "unencrypted requests",
+            host,
+        )
+        return None
+
+    if len(decoded) != ENC_RAND_LENGTH:
+        _LOGGER.warning(
+            "DTU %s has an encryption random with %d bytes; expected %d. "
+            "Starting with unencrypted requests",
+            host,
+            len(decoded),
+            ENC_RAND_LENGTH,
+        )
+        return None
+
+    return decoded
 
 PLATFORMS = [Platform.SENSOR, Platform.NUMBER, Platform.BINARY_SENSOR, Platform.BUTTON]
 
@@ -101,11 +140,13 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     enc_rand = config_entry.data.get(CONF_ENC_RAND, None)
     timeout = config_entry.data.get(CONF_TIMEOUT, DEFAULT_TIMEOUT_SECONDS)
 
-    if is_encrypted:
+    stored_enc_rand = _decode_stored_enc_rand(host, is_encrypted, enc_rand)
+
+    if stored_enc_rand is not None:
         dtu = DTU(
             host,
-            is_encrypted=is_encrypted,
-            enc_rand=bytes.fromhex(enc_rand),
+            is_encrypted=True,
+            enc_rand=stored_enc_rand,
             timeout=timeout,
         )
     else:

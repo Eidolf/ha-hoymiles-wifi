@@ -1,19 +1,27 @@
 """Utils for hoymiles-wifi."""
 
-from typing import Union
+from typing import TYPE_CHECKING, Union
 import asyncio
 import logging
 
 from hoymiles_wifi.dtu import DTU
 from hoymiles_wifi.hoymiles import generate_inverter_serial_number
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 
 from hoymiles_wifi.const import IS_ENCRYPTED_BIT_INDEX
 
 from .error import CannotConnect
 
-from .const import CONF_ENC_RAND, DEFAULT_TIMEOUT_SECONDS
+from .const import (
+    CONF_ENC_RAND,
+    CONF_IS_ENCRYPTED,
+    DEFAULT_TIMEOUT_SECONDS,
+    ENC_RAND_LENGTH,
+)
+
+if TYPE_CHECKING:
+    from hoymiles_wifi.protobuf.APPInfomationData_pb2 import APPDtuInfoMO
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -147,18 +155,39 @@ def is_encrypted_dtu(dfs: int) -> bool:
     return (dfs >> IS_ENCRYPTED_BIT_INDEX) & 1
 
 
-async def async_check_and_update_enc_rand(
-    hass: HomeAssistant, config_entry: ConfigEntry, dtu: DTU, enc_rand: str
+@callback
+def async_sync_encryption_state(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    dtu: DTU,
+    dtu_info: "APPDtuInfoMO",
 ) -> None:
-    """Check and update the enc_rand if necessary."""
-    enc_rand_old = config_entry.data.get(CONF_ENC_RAND, None)
+    """Synchronize live and persisted encryption state with the DTU."""
+    encryption_announced = bool(is_encrypted_dtu(dtu_info.dfs))
 
-    if enc_rand_old is None or enc_rand_old != enc_rand:
-        _LOGGER.debug(
-            "Updating enc_rand in config entry and DTU from %s to %s",
-            enc_rand_old,
-            enc_rand,
+    if encryption_announced and len(dtu_info.enc_rand) != ENC_RAND_LENGTH:
+        _LOGGER.warning(
+            "DTU announced encryption with an unusable encryption random of %d "
+            "bytes (expected %d); continuing unencrypted",
+            len(dtu_info.enc_rand),
+            ENC_RAND_LENGTH,
         )
-        dtu.enc_rand = bytes.fromhex(enc_rand)
-        new_data = {**config_entry.data, CONF_ENC_RAND: enc_rand}
-        hass.config_entries.async_update_entry(config_entry, data=new_data)
+        is_encrypted = False
+    else:
+        is_encrypted = encryption_announced
+
+    enc_rand = dtu_info.enc_rand.hex() if is_encrypted else ""
+    dtu.is_encrypted = is_encrypted
+    dtu.enc_rand = bytes.fromhex(enc_rand) if enc_rand else b""
+
+    stored_is_encrypted = config_entry.data.get(CONF_IS_ENCRYPTED, False)
+    stored_enc_rand = config_entry.data.get(CONF_ENC_RAND, "") or ""
+    if stored_is_encrypted == is_encrypted and stored_enc_rand == enc_rand:
+        return
+
+    new_data = {
+        **config_entry.data,
+        CONF_IS_ENCRYPTED: is_encrypted,
+        CONF_ENC_RAND: enc_rand,
+    }
+    hass.config_entries.async_update_entry(config_entry, data=new_data)

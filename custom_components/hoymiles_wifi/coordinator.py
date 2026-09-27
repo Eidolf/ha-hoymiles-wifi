@@ -2,14 +2,15 @@
 
 from datetime import timedelta
 import logging
+import time
 
 import homeassistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, Platform
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from hoymiles_wifi.dtu import DTU
-from .const import DOMAIN, FAILURE_LOG_INTERVAL
-from .util import async_check_and_update_enc_rand, is_encrypted_dtu
+from hoymiles_wifi.dtu import DTU, NetworkState
+from .const import DOMAIN, ENCRYPTION_RESYNC_MIN_INTERVAL_SECONDS, FAILURE_LOG_INTERVAL
+from .util import async_sync_encryption_state
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,6 +35,8 @@ class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
         # It prevents log spam during multi-hour outages while still logging
         # periodic reminders so the user knows the DTU is still offline.
         self._consecutive_failures: int = 0
+        self._reload_task = None
+        self._last_encryption_resync: float | None = None
 
         _LOGGER.debug(
             "Setup entry with update interval %s. IP: %s",
@@ -84,12 +87,16 @@ class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
                 self._consecutive_failures,
             )
 
-        if self._consecutive_failures == 100:
+        if self._consecutive_failures == 100 and (
+            self._reload_task is None or self._reload_task.done()
+        ):
             _LOGGER.warning(
-                "%s: DTU has been offline for an extended period. Automatically reloading the integration to ensure a clean reconnect state when it wakes up.",
+                "%s: DTU has been offline for an extended period. "
+                "Automatically reloading the integration to ensure a clean "
+                "reconnect state when it wakes up.",
                 coordinator_name,
             )
-            self._hass.async_create_task(
+            self._reload_task = self._hass.async_create_task(
                 self._hass.config_entries.async_reload(self._config_entry.entry_id)
             )
 
@@ -113,29 +120,31 @@ class HoymilesDataUpdateCoordinator(DataUpdateCoordinator):
                 self._consecutive_failures,
             )
         self._consecutive_failures = 0
+        self._reload_task = None
 
 
 class HoymilesRealDataUpdateCoordinator(HoymilesDataUpdateCoordinator):
     """Data coordinator for Hoymiles integration."""
 
     async def _async_update_data(self):
-        """Update data via library.
-
-        --- RECONNECTION: Raises UpdateFailed if DTU returns None, enabling
-        HA's automatic retry and entity unavailability marking. When DTU is
-        offline (e.g., overnight), entities become unavailable. When it comes
-        back online, entities automatically recover without manual intervention.
-        """
+        """Update data via library."""
         _LOGGER.debug("Hoymiles real data coordinator update")
 
         try:
             response = await self._dtu.async_get_real_data_new()
         except Exception as err:
-            # --- RECONNECTION: Catch any unexpected exceptions from the DTU library
-            # (e.g., unhandled socket errors) and convert them to UpdateFailed
-            # so the coordinator doesn't stop polling entirely.
+            _LOGGER.debug("RealData: Exception while querying data: %s", err)
             self._handle_update_failure("RealData")
             return  # pragma: no cover — _handle_update_failure always raises
+
+        if not response and self._dtu.get_state() is NetworkState.Unknown:
+            if await self._async_resync_encryption_state():
+                try:
+                    response = await self._dtu.async_get_real_data_new()
+                except Exception as err:
+                    _LOGGER.debug("RealData retry: Exception while querying data: %s", err)
+                    self._handle_update_failure("RealData")
+                    return  # pragma: no cover
 
         if not response:
             self._handle_update_failure("RealData")
@@ -143,6 +152,37 @@ class HoymilesRealDataUpdateCoordinator(HoymilesDataUpdateCoordinator):
 
         self._handle_update_success("RealData")
         return response
+
+    async def _async_resync_encryption_state(self) -> bool:
+        """Re-read encryption state at most once per configured interval."""
+        now = time.monotonic()
+        if (
+            self._last_encryption_resync is not None
+            and now - self._last_encryption_resync
+            < ENCRYPTION_RESYNC_MIN_INTERVAL_SECONDS
+        ):
+            _LOGGER.debug("Encryption re-sync throttled, skipping")
+            return False
+
+        self._last_encryption_resync = now
+        was_encrypted = self._dtu.is_encrypted
+        previous_enc_rand = self._dtu.enc_rand
+        try:
+            app_info = await self._dtu.async_app_information_data()
+        except Exception as err:
+            _LOGGER.debug("Encryption re-sync failed: %s", err)
+            return False
+
+        if not app_info:
+            return False
+
+        async_sync_encryption_state(
+            self._hass, self._config_entry, self._dtu, app_info.dtu_info
+        )
+        return (
+            was_encrypted != self._dtu.is_encrypted
+            or previous_enc_rand != self._dtu.enc_rand
+        )
 
 
 class HoymilesConfigUpdateCoordinator(HoymilesDataUpdateCoordinator):
@@ -191,15 +231,15 @@ class HoymilesAppInfoUpdateCoordinator(HoymilesDataUpdateCoordinator):
             _LOGGER.debug("Unable to retrieve app info data. Inverter might be offline.")
             return None
 
-        # Encryption handling only runs on successful responses
-        if response.dtu_info.dfs:
-            if is_encrypted_dtu(response.dtu_info.dfs):
-                await async_check_and_update_enc_rand(
-                    self._hass,
-                    self._config_entry,
-                    self._dtu,
-                    response.dtu_info.enc_rand.hex(),
-                )
+        # Synchronize encryption state on every usable app-info response,
+        # including dfs == 0 so a firmware downgrade can turn it off again.
+        if response:
+            async_sync_encryption_state(
+                self._hass,
+                self._config_entry,
+                self._dtu,
+                response.dtu_info,
+            )
 
         self._handle_update_success("AppInfo")
         return response
